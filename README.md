@@ -1,5 +1,6 @@
 # HAkube8-ansibleplaybook
 1. Prerequisites
+
 The account running this ansible playbook should have passwordless ssh account to all nodes (masters and slaves)
 ```
 Masters are:
@@ -43,6 +44,7 @@ ansible_become=true
 ```
 
 2. Hosts
+
 Edit the hosts file to add or remove slave nodes, update the hostname and ip-address accordingly
 
 3. Run the Playbook. Use this cmd
