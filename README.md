@@ -4,7 +4,9 @@ The account running this ansible playbook should have passwordless ssh account t
 
 Masters are:
 192.168.169.160
+
 192.168.169.161
+
 192.168.169.162
 
 Workers are:
