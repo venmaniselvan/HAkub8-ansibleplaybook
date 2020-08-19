@@ -1,0 +1,21 @@
+---
+# tasks file for kubeadm-init-master
+- name: reset kubeadm
+  shell: kubeadm reset -f
+- name: verify the haproxy service
+  service:
+    name: haproxy
+    state: started
+- name: Initializing Kubernetes cluster
+  shell: kubeadm init --control-plane-endpoint "kube8master1.ansible.com:80" --upload-certs --apiserver-advertise-address "{{hostvars[inventory_hostname]['ansible_enp0s8']['ipv4']['address']}}" --pod-network-cidr 192.168.0.0/16 --service-cidr 192.168.10.0/24
+  register: output
+- name: Storing Logs and Generated token for future purpose.
+  local_action: copy content={{ output.stdout }} dest="./token"
+- name: Copying required files
+  shell: |
+    mkdir -p $HOME/.kube
+    sudo cp -f /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+- name: Install calico pod network
+  command: kubectl create -f https://docs.projectcalico.org/v3.8/manifests/calico.yaml
+

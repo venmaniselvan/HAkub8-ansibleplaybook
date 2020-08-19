@@ -1,0 +1,35 @@
+---
+- name: playbook for Ha kube8 cluster
+  hosts: haproxy
+  #become: true
+  #gather_facts: true
+  vars:
+    my_file: /etc/haproxy/haproxy.cfg
+    my_template: haproxy.j2
+  roles:
+  - role: haproxy
+
+- hosts: k8snodes
+  #become: true
+  #gather_facts: true
+  roles:
+  - role: prerequisites
+
+- hosts: lead
+  #become: true
+  #gather_facts: true
+  roles:
+  - role: kubeadm-init-master
+
+- hosts: masters
+  #become: true
+  #gather_facts: true
+  roles:
+  - role: kubeadm-join-masters
+
+
+- hosts: workers
+  #become: true
+  #gather_facts: true
+  roles:
+  - role: kubeadm-join-workers
